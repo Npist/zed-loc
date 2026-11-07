@@ -5,6 +5,8 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  CC: gcc
+  CXX: g++
 
 jobs:
   build-linux: # 脚本来自 zed 官方仓库
