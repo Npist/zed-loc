@@ -28,7 +28,12 @@ jobs:
         run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
       - name: 安装 Linux 依赖项
-        run: ./zed/script/linux && ./zed/script/install-mold 2.34.0
+        run: ./zed/script/linux 
+        
+        # && ./zed/script/install-mold 2.34.0
+
+      - name: mold
+        run: sudo apt-get update && sudo apt-get install -y mold
 
       - name: 限制目标目录大小
         run: zed/script/clear-target-dir-if-larger-than 100
@@ -53,35 +58,35 @@ jobs:
       #    name: zed-remote-server-linux-x86_64
       #    path: zed/target/zed-remote-server-linux-x86_64
 
-  bundle-linux-arm:
-    runs-on: ubuntu-22.04-arm
+  # bundle-linux-arm:
+  #   runs-on: ubuntu-22.04-arm
 
-    steps:
-      - name: 设置 Python 3.10
-        uses: actions/setup-python@v3
-        with:
-          python-version: "3.10"
-      - uses: actions/checkout@v4
-      - name: 手动同步 zed 源代码
-        uses: actions/checkout@v4
-        with:
-          repository: zed-industries/zed
-          ref: main
-          path: zed
-      - name: 替换
-        run: python3 replace.py
+  #   steps:
+  #     - name: 设置 Python 3.10
+  #       uses: actions/setup-python@v3
+  #       with:
+  #         python-version: "3.10"
+  #     - uses: actions/checkout@v4
+  #     - name: 手动同步 zed 源代码
+  #       uses: actions/checkout@v4
+  #       with:
+  #         repository: zed-industries/zed
+  #         ref: main
+  #         path: zed
+  #     - name: 替换
+  #       run: python3 replace.py
 
-      - name: 安装 Linux 依赖项
-        run: ./zed/script/linux
+  #     - name: 安装 Linux 依赖项
+  #       run: ./zed/script/linux
 
-      - name: 限制目标目录大小
-        run: zed/script/clear-target-dir-if-larger-than 100
+  #     - name: 限制目标目录大小
+  #       run: zed/script/clear-target-dir-if-larger-than 100
 
-      - name: 创建 Linux .tar.gz 包
-        run: cd zed && script/bundle-linux
+  #     - name: 创建 Linux .tar.gz 包
+  #       run: cd zed && script/bundle-linux
       
-      - name: 上传
-        run: cd zed && script/upload-nightly linux-targz
+  #     - name: 上传
+  #       run: cd zed && script/upload-nightly linux-targz
 
       # - name: 移动
       #   run: mv zed/target/release/zed-*.tar.gz zed-linux-arm64.tar.gz
